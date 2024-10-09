@@ -27,6 +27,7 @@ from typing import Any
 from tiny_api_client import api_client, get
 
 from .moodle import (
+    MoodleToken,
     MoodleSiteInfo,
     MoodleCourse,
     MoodlePrivateFilesInfo,
@@ -38,6 +39,18 @@ from .moodle import (
 from .exceptions import status_handler
 
 _logger = logging.getLogger(__name__)
+
+
+@api_client(timeout=15, status_handler=status_handler, status_key='errorcode')
+class MoodleLogin:
+    def __init__(self, url: str, *, username: str, password: str):
+        endpoint = "/login/token.php?"
+        query = f"username={username}&password={password}&service="
+        self._url = url.rstrip("/") + endpoint + query
+
+    @get("moodle_mobile_app")
+    def login(self, response: Any) -> str:
+        return MoodleToken(**response).token
 
 
 @api_client(timeout=12, status_handler=status_handler, status_key='errorcode')

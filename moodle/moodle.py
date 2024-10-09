@@ -29,6 +29,11 @@ class ImmutableModel(BaseModel):
     model_config = ConfigDict(frozen=True)
 
 
+class MoodleToken(ImmutableModel):
+    token: str
+    privatetoken: str | None = None
+
+
 class MoodlePreference(ImmutableModel):
     name: str
     value: str | int | None
