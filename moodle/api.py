@@ -101,7 +101,7 @@ class MoodleSession:
 
     # core_course #
 
-    @get("core_course_get_contents")
+    @get("core_course_get_contents&courseid={course_id}")
     def core_course_get_contents(self, response: Any) -> list[MoodleContent]:
         return [MoodleContent(**content) for content in response]
 
