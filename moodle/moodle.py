@@ -161,7 +161,7 @@ class MoodleResource(ImmutableModel):
     timemodified: datetime
 
 
-class MoodleInContent(ImmutableModel):
+class MoodleContent(ImmutableModel):
     type: str
     filename: str
     filepath: str
@@ -177,7 +177,7 @@ class MoodleInContent(ImmutableModel):
     license: str
 
 
-class MoodleInContentInfo(ImmutableModel):
+class MoodleContentInfo(ImmutableModel):
     filescount: int
     filessize: int
     lastmodified: int
@@ -239,11 +239,11 @@ class MoodleModule(ImmutableModel):
     downloadcontent: int
     dates: list[MoodleDate]
     groupmode: int
-    contents: list[MoodleInContent] | None = None
-    contentsinfo: MoodleInContentInfo | None = None
+    contents: list[MoodleContent] | None = None
+    contentsinfo: MoodleContentInfo | None = None
 
 
-class MoodleContent(ImmutableModel):
+class MoodleSection(ImmutableModel):
     id: int
     name: str
     visible: int

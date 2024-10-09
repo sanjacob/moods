@@ -33,7 +33,7 @@ from .moodle import (
     MoodlePrivateFilesInfo,
     MoodleUserPreferences,
     MoodleResource,
-    MoodleContent
+    MoodleSection
 )
 
 from .exceptions import status_handler
@@ -102,8 +102,8 @@ class MoodleSession:
     # core_course #
 
     @get("core_course_get_contents&courseid={course_id}")
-    def core_course_get_contents(self, response: Any) -> list[MoodleContent]:
-        return [MoodleContent(**content) for content in response]
+    def core_course_get_contents(self, response: Any) -> list[MoodleSection]:
+        return [MoodleSection(**section) for section in response]
 
     @get("core_course_get_courses")
     def core_course_get_courses(self, response: Any) -> list[MoodleCourse]:
