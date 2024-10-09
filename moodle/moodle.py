@@ -274,7 +274,7 @@ class MoodleModuleType(str, Enum):
 
 class MoodleModule(ImmutableModel):
     id: int
-    url: str
+    url: str | None = None
     name: str
     instance: int
     contextid: int

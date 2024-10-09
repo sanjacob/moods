@@ -145,3 +145,17 @@ class MoodleSession:
     def mod_resource_get_resources_by_courses(self, response: Any
                                               ) -> list[MoodleResource]:
         return [MoodleResource(**res) for res in response['resources']]
+
+    # download #
+
+    def download(self, **kwargs: str) -> Any:
+        """Download content from a given url (attachment_id)."""
+
+        @get("{attachment_id}", json=False,
+             stream=True, use_api=False)
+        def _download(self: Any, response: Any) -> Any:
+            return response
+
+        return _download(self,
+                         params={'token': self._token},
+                         **kwargs)  # type: ignore
