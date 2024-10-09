@@ -111,7 +111,8 @@ class MoodleSession:
         return [MoodleCourse(**course) for course in response]
 
     # core_enrol #
-    @get("core_enrol_get_users_courses")
+
+    @get("core_enrol_get_users_courses&userid={user_id}")
     def core_enrol_get_users_courses(self, response: Any
                                      ) -> list[MoodleCourse]:
         """Get list of course ids that a user is enrolled in."""
