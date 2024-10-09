@@ -19,6 +19,7 @@ Moodle Model Classes
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
 # MA  02110-1301, USA.
 
+from enum import Enum
 from typing import Any
 from datetime import datetime
 
@@ -161,20 +162,32 @@ class MoodleResource(ImmutableModel):
     timemodified: datetime
 
 
+class MoodleContentType(str, Enum):
+    """Different resource types on Moodle."""
+
+    File = 'file'
+    Url = 'url'
+    Other = '__moods_other'
+
+    @classmethod
+    def _missing_(cls, value: Any) -> 'MoodleContentType':
+        return cls.Other
+
+
 class MoodleContent(ImmutableModel):
-    type: str
+    type: MoodleContentType
     filename: str
-    filepath: str
+    filepath: str | None = None
     filesize: int
-    fileurl: str
-    timecreated: datetime
-    timemodified: datetime
-    sortorder: int
-    mimetype: str
-    isexternalfile: bool
-    userid: int
-    author: str
-    license: str
+    fileurl: str | None = None
+    timecreated: datetime | None
+    timemodified: datetime | None
+    sortorder: int | None = None
+    mimetype: str | None = None
+    isexternalfile: bool = False
+    userid: int | None = None
+    author: str | None = None
+    license: str | None = None
 
 
 class MoodleContentInfo(ImmutableModel):
