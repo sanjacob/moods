@@ -22,6 +22,7 @@ Moodle Model Classes
 from enum import Enum
 from typing import Any
 from datetime import datetime
+from pathvalidate import sanitize_filename
 
 from pydantic import BaseModel, ConfigDict
 
@@ -112,6 +113,22 @@ class MoodleCourse(ImmutableModel):
     showactivitydates: bool
     showcompletionconditions: bool
     timemodified: datetime
+
+    @property
+    def code(self) -> str:
+        return self.idnumber or str(self.id)
+
+    @property
+    def title(self) -> str:
+        return self.displayname or self.fullname
+
+    @property
+    def created(self) -> datetime:
+        return self.startdate
+
+    @property
+    def availability(self) -> bool:
+        return not self.hidden
 
 
 class MoodlePrivateFilesInfo(ImmutableModel):
@@ -227,6 +244,22 @@ class MoodleCompletionData(ImmutableModel):
     isoverallcomplete: bool
 
 
+class MoodleModuleType(str, Enum):
+    """Different module types on Moodle."""
+
+    Forum = 'forum'
+    Lti = 'lti'
+    Resource = 'resource'
+    Quiz = 'quiz'
+    Folder = 'folder'
+    Url = 'url'
+    Other = '__moods_mod_other'
+
+    @classmethod
+    def _missing_(cls, value: Any) -> 'MoodleModuleType':
+        return cls.Other
+
+
 class MoodleModule(ImmutableModel):
     id: int
     url: str
@@ -237,7 +270,7 @@ class MoodleModule(ImmutableModel):
     uservisible: bool
     visibleoncoursepage: int
     modicon: str
-    modname: str
+    modname: MoodleModuleType
     purpose: str
     branded: bool
     modplural: str
@@ -254,6 +287,34 @@ class MoodleModule(ImmutableModel):
     groupmode: int
     contents: list[MoodleContent] = []
     contentsinfo: MoodleContentInfo | None = None
+
+    @property
+    def contentHandler(self) -> MoodleModuleType:
+        return self.modname
+
+    @property
+    def title(self) -> str:
+        return self.name
+
+    @property
+    def title_path_safe(self) -> str:
+        return sanitize_filename(self.name) or 'Untitled'
+
+    @property
+    def body(self) -> None:
+        return None
+
+    @property
+    def modified(self) -> None:
+        return None
+
+    @property
+    def availability(self) -> bool:
+        return self.uservisible
+
+    @property
+    def hasChildren(self) -> bool:
+        return bool(self.contents)
 
 
 class MoodleSection(ImmutableModel):
