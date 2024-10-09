@@ -20,6 +20,7 @@ Moodle Model Classes
 # MA  02110-1301, USA.
 
 from typing import Any
+from datetime import datetime
 
 from pydantic import BaseModel, ConfigDict
 
@@ -100,16 +101,16 @@ class MoodleCourse(ImmutableModel):
     category: int
     progress: int | None
     completed: bool
-    startdate: int
-    enddate: int
+    startdate: datetime
+    enddate: datetime
     marker: int
-    lastaccess: int
+    lastaccess: datetime
     isfavourite: bool
     hidden: bool
     overviewfiles: list[str]
     showactivitydates: bool
     showcompletionconditions: bool
-    timemodified: int
+    timemodified: datetime
 
 
 class MoodlePrivateFilesInfo(ImmutableModel):
@@ -130,7 +131,7 @@ class MoodleFile(ImmutableModel):
     filepath: str
     filesize: int
     fileurl: str
-    timemodified: int
+    timemodified: datetime
     mimetype: str
     isexternalfile: bool
     icon: str
@@ -157,7 +158,7 @@ class MoodleResource(ImmutableModel):
     displayoptions: str
     filterfiles: int
     revision: int
-    timemodified: int
+    timemodified: datetime
 
 
 class MoodleInContent(ImmutableModel):
@@ -166,8 +167,8 @@ class MoodleInContent(ImmutableModel):
     filepath: str
     filesize: int
     fileurl: str
-    timecreated: int
-    timemodified: int
+    timecreated: datetime
+    timemodified: datetime
     sortorder: int
     mimetype: str
     isexternalfile: bool
@@ -186,7 +187,7 @@ class MoodleInContentInfo(ImmutableModel):
 
 class MoodleDate(ImmutableModel):
     label: str
-    timestamp: int
+    timestamp: datetime
     dataid: str
 
 
@@ -202,7 +203,7 @@ class MoodleRule(ImmutableModel):
 
 class MoodleCompletionData(ImmutableModel):
     state: int
-    timecompleted: int
+    timecompleted: datetime
     overrideby: None
     valueused: bool
     hascompletion: bool
