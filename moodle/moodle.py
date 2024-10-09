@@ -206,6 +206,18 @@ class MoodleContent(ImmutableModel):
     author: str | None = None
     license: str | None = None
 
+    @property
+    def mimeType(self) -> str | None:
+        return self.mimetype
+
+    @property
+    def fileName(self) -> str:
+        return f"{self.filepath} {self.filename}"
+
+    @property
+    def id(self) -> str | None:
+        return self.fileurl
+
 
 class MoodleContentInfo(ImmutableModel):
     filescount: int
