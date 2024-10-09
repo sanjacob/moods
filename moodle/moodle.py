@@ -150,7 +150,7 @@ class MoodleResource(ImmutableModel):
     groupmode: int
     groupingid: int
     lang: str
-    contentfiles: list[MoodleFile]
+    contentfiles: list[MoodleFile] = []
     tobemigrated: int
     legacyfiles: int
     legacyfileslast: None
@@ -239,7 +239,7 @@ class MoodleModule(ImmutableModel):
     downloadcontent: int
     dates: list[MoodleDate]
     groupmode: int
-    contents: list[MoodleContent] | None = None
+    contents: list[MoodleContent] = []
     contentsinfo: MoodleContentInfo | None = None
 
 
@@ -254,4 +254,4 @@ class MoodleSection(ImmutableModel):
     uservisible: bool
     component: Any
     itemid: Any
-    modules: list[MoodleModule]
+    modules: list[MoodleModule] = []
