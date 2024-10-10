@@ -83,6 +83,17 @@ class MoodleSiteInfo(ImmutableModel):
     policyagreed: int
 
 
+class MoodleFile(ImmutableModel):
+    filename: str
+    filepath: str
+    filesize: int
+    fileurl: str
+    timemodified: datetime
+    mimetype: str
+    isexternalfile: bool = False
+    icon: str | None = None
+
+
 class MoodleCourse(ImmutableModel):
     id: int
     shortname: str
@@ -95,23 +106,23 @@ class MoodleCourse(ImmutableModel):
     summaryformat: int
     format: str
     courseimage: str
-    showgrades: bool
+    showgrades: bool | None
     lang: str
-    enablecompletion: bool
-    completionhascriteria: bool
-    completionusertracked: bool
+    enablecompletion: bool | None
+    completionhascriteria: bool | None
+    completionusertracked: bool | None
     category: int
-    progress: int | None
-    completed: bool
+    progress: int | float | None
+    completed: bool | None
     startdate: datetime
     enddate: datetime
     marker: int
-    lastaccess: datetime
+    lastaccess: datetime | None
     isfavourite: bool
     hidden: bool
-    overviewfiles: list[str]
+    overviewfiles: list[MoodleFile]
     showactivitydates: bool
-    showcompletionconditions: bool
+    showcompletionconditions: bool | None
     timemodified: datetime
 
     @property
@@ -142,17 +153,6 @@ class MoodlePrivateFilesInfo(ImmutableModel):
 class MoodleUserPreferences(ImmutableModel):
     preferences: list[MoodlePreference]
     warnings: list[str]
-
-
-class MoodleFile(ImmutableModel):
-    filename: str
-    filepath: str
-    filesize: int
-    fileurl: str
-    timemodified: datetime
-    mimetype: str
-    isexternalfile: bool
-    icon: str
 
 
 class MoodleResource(ImmutableModel):
@@ -272,6 +272,11 @@ class MoodleModuleType(str, Enum):
         return cls.Other
 
 
+class MoodleBadge(ImmutableModel):
+    badgecontent: str
+    badgestyle: str
+
+
 class MoodleModule(ImmutableModel):
     id: int
     url: str | None = None
@@ -288,8 +293,8 @@ class MoodleModule(ImmutableModel):
     modplural: str
     indent: int
     onclick: str
-    afterlink: None
-    activitybadge: list[Any] | None = None
+    afterlink: str | None
+    activitybadge: MoodleBadge | list[MoodleBadge] | None = None
     customdata: str
     noviewlink: bool
     completion: int

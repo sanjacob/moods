@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.12] - 2024-10-10
+
+### Fixed
+- Allow None in some API model properties
+- Add `MoodleBadge` model
+
 ## [0.1.11] - 2024-10-10
 
 ### Fixed
