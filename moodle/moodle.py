@@ -290,6 +290,9 @@ class MoodleContentHandler(ImmutableModel):
     def __eq__(self, other: object) -> bool:
         if isinstance(other, MoodleModuleType):
             return self.id == other
+        elif isinstance(other, Enum):
+            # prevents conflicts with other namespaces
+            return False
         elif isinstance(other, str):
             return self.id == MoodleModuleType(other)
         elif isinstance(other, MoodleContentHandler):
