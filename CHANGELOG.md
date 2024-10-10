@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.17] - 2024-10-10
+
+### Added
+- Inline attachment (webdav) download method (same as regular)
+
 ## [0.1.16] - 2024-10-10
 
 ### Fixed

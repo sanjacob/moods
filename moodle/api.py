@@ -159,3 +159,15 @@ class MoodleSession:
         return _download(self,
                          params={'token': self._token},
                          **kwargs)  # type: ignore
+
+    def download_webdav(self, **kwargs: str) -> Any:
+        """Download content from a given url (attachment_id)."""
+
+        @get("{webdav_url}", json=False,
+             stream=True, use_api=False)
+        def _download(self: Any, response: Any) -> Any:
+            return response
+
+        return _download(self,
+                         params={'token': self._token},
+                         **kwargs)  # type: ignore
