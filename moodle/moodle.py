@@ -325,7 +325,7 @@ class MoodleModule(ImmutableModel):
         return sanitize_filename(self.name) or 'Untitled'
 
     @property
-    def body(self) -> None:
+    def body(self) -> str | None:
         return self.description
 
     @property
