@@ -283,6 +283,23 @@ class MoodleBadge(ImmutableModel):
     badgestyle: str
 
 
+class MoodleContentHandler(ImmutableModel):
+    id: MoodleModuleType | None = None
+    url: str | None = None
+
+    def __eq__(self, other: object) -> bool:
+        if isinstance(other, MoodleModuleType):
+            return self.id == other
+        elif isinstance(other, str):
+            return self.id == MoodleModuleType(other)
+        elif isinstance(other, MoodleContentHandler):
+            return super().__eq__(other)
+        return False
+
+    def __str__(self) -> str:
+        return str(self.id)
+
+
 class MoodleModule(ImmutableModel):
     id: int
     url: str | None = None
@@ -313,8 +330,9 @@ class MoodleModule(ImmutableModel):
     contentsinfo: MoodleContentInfo | None = None
 
     @property
-    def contentHandler(self) -> MoodleModuleType:
-        return self.modname
+    def contentHandler(self) -> MoodleContentHandler:
+        url = self.contents[0].fileurl if self.contents else None
+        return MoodleContentHandler(id=self.modname, url=url)
 
     @property
     def title(self) -> str:
