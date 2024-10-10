@@ -212,7 +212,7 @@ class MoodleContent(ImmutableModel):
 
     @property
     def fileName(self) -> str:
-        return f"{self.filepath} {self.filename}"
+        return f"{self.filepath}{self.filename}"
 
     @property
     def id(self) -> str | None:
