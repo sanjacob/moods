@@ -259,11 +259,17 @@ class MoodleCompletionData(ImmutableModel):
 class MoodleModuleType(str, Enum):
     """Different module types on Moodle."""
 
-    Forum = 'forum'
-    Lti = 'lti'
-    Resource = 'resource'
-    Quiz = 'quiz'
+    Assignment = 'assign'
+    Book = 'book'
     Folder = 'folder'
+    Forum = 'forum'
+    Glossary = 'glossary'
+    h5pActivity = 'h5pactivity'
+    Lti = 'lti'
+    Page = 'page'
+    Quiz = 'quiz'
+    Resource = 'resource'
+    Subsection = 'subsection'
     Url = 'url'
     Other = '__moods_mod_other'
 
@@ -283,6 +289,7 @@ class MoodleModule(ImmutableModel):
     name: str
     instance: int
     contextid: int
+    description: str | None = None
     visible: int
     uservisible: bool
     visibleoncoursepage: int
@@ -319,7 +326,7 @@ class MoodleModule(ImmutableModel):
 
     @property
     def body(self) -> None:
-        return None
+        return self.description
 
     @property
     def modified(self) -> None:

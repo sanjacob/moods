@@ -10,6 +10,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - Add `body` property to `MoodleSection`
+- More Module Types
+- Optional description property in Module
 
 ## [0.1.12] - 2024-10-10
 
