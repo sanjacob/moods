@@ -346,3 +346,7 @@ class MoodleSection(ImmutableModel):
     component: Any
     itemid: Any
     modules: list[MoodleModule] = []
+
+    @property
+    def body(self) -> str:
+        return self.summary
