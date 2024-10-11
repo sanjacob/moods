@@ -376,5 +376,9 @@ class MoodleSection(ImmutableModel):
     modules: list[MoodleModule] = []
 
     @property
+    def title(self) -> str:
+        return self.name
+
+    @property
     def body(self) -> str:
         return self.summary
