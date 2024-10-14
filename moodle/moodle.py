@@ -22,7 +22,6 @@ Moodle Model Classes
 from enum import Enum
 from typing import Any
 from datetime import datetime
-from pathvalidate import sanitize_filename
 
 from pydantic import BaseModel, ConfigDict
 
@@ -125,22 +124,6 @@ class MoodleCourse(ImmutableModel):
     showcompletionconditions: bool | None
     timemodified: datetime
 
-    @property
-    def code(self) -> str:
-        return self.idnumber or str(self.id)
-
-    @property
-    def title(self) -> str:
-        return self.displayname or self.fullname
-
-    @property
-    def created(self) -> datetime:
-        return self.startdate
-
-    @property
-    def availability(self) -> bool:
-        return not self.hidden
-
 
 class MoodlePrivateFilesInfo(ImmutableModel):
     filecount: int
@@ -206,23 +189,11 @@ class MoodleContent(ImmutableModel):
     author: str | None = None
     license: str | None = None
 
-    @property
-    def mimeType(self) -> str | None:
-        return self.mimetype
-
-    @property
-    def fileName(self) -> str:
-        return f"{self.filepath}{self.filename}"
-
-    @property
-    def id(self) -> str | None:
-        return self.fileurl
-
 
 class MoodleContentInfo(ImmutableModel):
     filescount: int
     filessize: int
-    lastmodified: int
+    lastmodified: datetime
     mimetypes: list[str]
     repositorytype: str
 
@@ -283,26 +254,6 @@ class MoodleBadge(ImmutableModel):
     badgestyle: str
 
 
-class MoodleContentHandler(ImmutableModel):
-    id: MoodleModuleType | None = None
-    url: str | None = None
-
-    def __eq__(self, other: object) -> bool:
-        if isinstance(other, MoodleModuleType):
-            return self.id == other
-        elif isinstance(other, Enum):
-            # prevents conflicts with other namespaces
-            return False
-        elif isinstance(other, str):
-            return self.id == MoodleModuleType(other)
-        elif isinstance(other, MoodleContentHandler):
-            return super().__eq__(other)
-        return False
-
-    def __str__(self) -> str:
-        return str(self.id)
-
-
 class MoodleModule(ImmutableModel):
     id: int
     url: str | None = None
@@ -332,35 +283,6 @@ class MoodleModule(ImmutableModel):
     contents: list[MoodleContent] = []
     contentsinfo: MoodleContentInfo | None = None
 
-    @property
-    def contentHandler(self) -> MoodleContentHandler:
-        url = self.contents[0].fileurl if self.contents else None
-        return MoodleContentHandler(id=self.modname, url=url)
-
-    @property
-    def title(self) -> str:
-        return self.name
-
-    @property
-    def title_path_safe(self) -> str:
-        return sanitize_filename(self.name) or 'Untitled'
-
-    @property
-    def body(self) -> str | None:
-        return self.description
-
-    @property
-    def modified(self) -> None:
-        return None
-
-    @property
-    def availability(self) -> bool:
-        return self.uservisible
-
-    @property
-    def hasChildren(self) -> bool:
-        return bool(self.contents)
-
 
 class MoodleSection(ImmutableModel):
     id: int
@@ -374,11 +296,3 @@ class MoodleSection(ImmutableModel):
     component: Any
     itemid: Any
     modules: list[MoodleModule] = []
-
-    @property
-    def title(self) -> str:
-        return self.name
-
-    @property
-    def body(self) -> str:
-        return self.summary

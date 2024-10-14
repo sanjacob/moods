@@ -6,6 +6,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.19] - 2024-10-11
+
+### Changed
+- `lastmodified` in `MoodleContentInfo` now datetime
+
+### Removed
+- Integration with Sync removed
+
 ## [0.1.18] - 2024-10-11
 
 ### Added
